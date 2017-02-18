@@ -16,20 +16,18 @@ import java.util.HashMap;
  */
 
 public class HLModalModule {
-    private static Toast mToast;
+    private Toast mToast;
 
-    private Activity mActivity;
     private static volatile HLModalModule instance = null;
 
-    private HLModalModule(Activity activity){
-        mActivity = activity;
+    private HLModalModule(){
     }
 
-    public static HLModalModule getInstance(Activity activity) {
+    public static HLModalModule getInstance() {
         if (instance == null) {
             synchronized (HLModalModule.class) {
                 if (instance == null) {
-                    instance = new HLModalModule(activity);
+                    instance = new HLModalModule();
                 }
             }
         }
@@ -37,7 +35,7 @@ public class HLModalModule {
         return instance;
     }
 
-    public void alert(HashMap<String, String> param, final HLModuleResultListener listener) {
+    public void alert(Activity activity, HashMap<String, String> param, final HLModuleResultListener listener) {
         String title = "";
         String message = "";
         String okButton = "OK";
@@ -48,7 +46,7 @@ public class HLModalModule {
             okButton = param.containsKey("okButton") ? param.get("okButton") : okButton;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(okButton, new DialogInterface.OnClickListener() {
@@ -60,7 +58,7 @@ public class HLModalModule {
         builder.show();
     }
 
-    public void confirm(HashMap<String, String> param, final HLModuleResultListener listener) {
+    public void confirm(Activity activity, HashMap<String, String> param, final HLModuleResultListener listener) {
         String title = "";
         String message = "";
         String okButton = "OK";
@@ -73,7 +71,7 @@ public class HLModalModule {
             cancelButton = param.containsKey("cancelButton") ? param.get("cancelButton") : "Cancel";
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title)
                 .setMessage(message)
                 .setNegativeButton(cancelButton, new DialogInterface.OnClickListener() {
@@ -91,7 +89,7 @@ public class HLModalModule {
         builder.show();
     }
 
-    public void prompt(HashMap<String, String> param, final HLModuleResultListener listener) {
+    public void prompt(Activity activity, HashMap<String, String> param, final HLModuleResultListener listener) {
         final HashMap<String, Object> result = new HashMap<>();
 
         String title = "";
@@ -107,10 +105,10 @@ public class HLModalModule {
             cancelButton = param.containsKey("cancelButton") ? param.get("cancelButton") : cancelButton;
         }
 
-        View editView = View.inflate(mActivity, R.layout.hl_edittext, null);
+        View editView = View.inflate(activity, R.layout.hl_edittext, null);
         final EditText inputView = (EditText) editView.findViewById(R.id.input);
         inputView.setText(text);
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title)
                 .setMessage(message)
                 .setView(editView)
@@ -134,7 +132,7 @@ public class HLModalModule {
                 .show();
     }
 
-    public void toast(HashMap<String, String> param, HLModuleResultListener listener) {
+    public void toast(Activity activity, HashMap<String, String> param, HLModuleResultListener listener) {
         if (mToast != null) {
             mToast.cancel();
         }
@@ -152,16 +150,16 @@ public class HLModalModule {
             position = param.containsKey("position") ? param.get("position") : "bottom";
         }
 
-        mToast = Toast.makeText(mActivity, message, duration > 3000? Toast.LENGTH_LONG:Toast.LENGTH_SHORT);
+        mToast = Toast.makeText(activity, message, duration > 3000? Toast.LENGTH_LONG:Toast.LENGTH_SHORT);
         switch (position) {
             case "top":
-                mToast.setGravity(Gravity.TOP, 0, (int) HLUtil.dp2px(mActivity, 96));
+                mToast.setGravity(Gravity.TOP, 0, (int) HLUtil.dp2px(activity, 96));
                 break;
             case "middle":
                 mToast.setGravity(Gravity.CENTER, 0, 0);
                 break;
             default:
-                mToast.setGravity(Gravity.BOTTOM, 0, (int) HLUtil.dp2px(mActivity, 48));
+                mToast.setGravity(Gravity.BOTTOM, 0, (int) HLUtil.dp2px(activity, 48));
                 break;
         }
         mToast.show();
