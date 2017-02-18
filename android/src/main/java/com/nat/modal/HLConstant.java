@@ -4,6 +4,7 @@ import android.os.Environment;
 
 /**
  * Created by xuqinchao on 17/1/10.
+ *  Copyright (c) 2017 Nat. All rights reserved.
  */
 
 public class HLConstant {

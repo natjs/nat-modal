@@ -1,8 +1,8 @@
 package com.nat.modal;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 /**
  * Created by xuqinchao on 17/2/7.
+ *  Copyright (c) 2017 Nat. All rights reserved.
  */
 
 public class HLModalModule {

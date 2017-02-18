@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by xuqinchao on 17/1/11.
+ *  Copyright (c) 2017 Nat. All rights reserved.
  */
 
 public class HLUtil {
