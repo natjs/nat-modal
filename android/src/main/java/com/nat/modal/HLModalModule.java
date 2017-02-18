@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -105,18 +104,17 @@ public class HLModalModule {
             cancelButton = param.containsKey("cancelButton") ? param.get("cancelButton") : cancelButton;
         }
 
-        View editView = View.inflate(activity, R.layout.hl_edittext, null);
-        final EditText inputView = (EditText) editView.findViewById(R.id.input);
-        inputView.setText(text);
+        final EditText editText = new EditText(activity);
+        editText.setText(text);
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title)
                 .setMessage(message)
-                .setView(editView)
+                .setView(editText)
                 .setNegativeButton(cancelButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         result.put("result", false);
-                        result.put("data", inputView.getText().toString().trim());
+                        result.put("data", editText.getText().toString().trim());
                         listener.onResult(result);
                     }
                 })
@@ -124,7 +122,7 @@ public class HLModalModule {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         result.put("result", true);
-                        result.put("data", inputView.getText().toString().trim());
+                        result.put("data", editText.getText().toString().trim());
                         listener.onResult(result);
                     }
                 })
