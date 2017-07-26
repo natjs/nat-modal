@@ -11,22 +11,22 @@ import java.util.HashMap;
 
 /**
  * Created by xuqinchao on 17/2/7.
- *  Copyright (c) 2017 Nat. All rights reserved.
+ *  Copyright (c) 2017 Instapp. All rights reserved.
  */
 
-public class HLModalModule {
+public class ModalModule {
     private Toast mToast;
 
-    private static volatile HLModalModule instance = null;
+    private static volatile ModalModule instance = null;
 
-    private HLModalModule(){
+    private ModalModule(){
     }
 
-    public static HLModalModule getInstance() {
+    public static ModalModule getInstance() {
         if (instance == null) {
-            synchronized (HLModalModule.class) {
+            synchronized (ModalModule.class) {
                 if (instance == null) {
-                    instance = new HLModalModule();
+                    instance = new ModalModule();
                 }
             }
         }
@@ -34,7 +34,7 @@ public class HLModalModule {
         return instance;
     }
 
-    public void alert(Activity activity, HashMap<String, String> param, final HLModuleResultListener listener) {
+    public void alert(Activity activity, HashMap<String, String> param, final ModuleResultListener listener) {
         String title = "";
         String message = "";
         String okButton = "OK";
@@ -57,7 +57,7 @@ public class HLModalModule {
         builder.show();
     }
 
-    public void confirm(Activity activity, HashMap<String, String> param, final HLModuleResultListener listener) {
+    public void confirm(Activity activity, HashMap<String, String> param, final ModuleResultListener listener) {
         String title = "";
         String message = "";
         String okButton = "OK";
@@ -88,7 +88,7 @@ public class HLModalModule {
         builder.show();
     }
 
-    public void prompt(Activity activity, HashMap<String, String> param, final HLModuleResultListener listener) {
+    public void prompt(Activity activity, HashMap<String, String> param, final ModuleResultListener listener) {
         final HashMap<String, Object> result = new HashMap<>();
 
         String title = "";
@@ -130,7 +130,7 @@ public class HLModalModule {
                 .show();
     }
 
-    public void toast(Activity activity, HashMap<String, String> param, HLModuleResultListener listener) {
+    public void toast(Activity activity, HashMap<String, String> param, ModuleResultListener listener) {
         if (mToast != null) {
             mToast.cancel();
         }
@@ -151,13 +151,13 @@ public class HLModalModule {
         mToast = Toast.makeText(activity, message, duration > 3000? Toast.LENGTH_LONG:Toast.LENGTH_SHORT);
         switch (position) {
             case "top":
-                mToast.setGravity(Gravity.TOP, 0, (int) HLUtil.dp2px(activity, 96));
+                mToast.setGravity(Gravity.TOP, 0, (int) Util.dp2px(activity, 96));
                 break;
             case "middle":
                 mToast.setGravity(Gravity.CENTER, 0, 0);
                 break;
             default:
-                mToast.setGravity(Gravity.BOTTOM, 0, (int) HLUtil.dp2px(activity, 48));
+                mToast.setGravity(Gravity.BOTTOM, 0, (int) Util.dp2px(activity, 48));
                 break;
         }
         mToast.show();
