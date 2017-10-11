@@ -7,6 +7,10 @@ import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -40,8 +44,8 @@ public class ModalModule {
         String okButton = "OK";
 
         if (param != null) {
-            title = param.containsKey("title")?param.get("title"):title;
-            message = param.containsKey("message")?param.get("message"):message;
+            title = param.containsKey("title") ? param.get("title") : title;
+            message = param.containsKey("message") ? param.get("message") : message;
             okButton = param.containsKey("okButton") ? param.get("okButton") : okButton;
         }
 
@@ -64,8 +68,8 @@ public class ModalModule {
         String cancelButton = "Cancel";
 
         if (param != null) {
-            title = param.containsKey("title")?param.get("title"):"";
-            message = param.containsKey("message")?param.get("message"):"";
+            title = param.containsKey("title") ? param.get("title") : "";
+            message = param.containsKey("message") ? param.get("message") : "";
             okButton = param.containsKey("okButton") ? param.get("okButton") : "OK";
             cancelButton = param.containsKey("cancelButton") ? param.get("cancelButton") : "Cancel";
         }
@@ -97,9 +101,9 @@ public class ModalModule {
         String okButton = "OK";
         String cancelButton = "Cancel";
         if (param != null) {
-            title = param.containsKey("title")?param.get("title"):title;
-            message = param.containsKey("message")?param.get("message"):message;
-            text = param.containsKey("text")?param.get("text"):text;
+            title = param.containsKey("title") ? param.get("title") : title;
+            message = param.containsKey("message") ? param.get("message") : message;
+            text = param.containsKey("text") ? param.get("text"):text;
             okButton = param.containsKey("okButton") ? param.get("okButton") : okButton;
             cancelButton = param.containsKey("cancelButton") ? param.get("cancelButton") : cancelButton;
         }
@@ -162,5 +166,40 @@ public class ModalModule {
         }
         mToast.show();
         listener.onResult(null);
+    }
+
+    public void showActionSheet(Activity activity, HashMap<String, Object> param, final ModuleResultListener listener) {
+        String title;
+        JSONArray options;
+        ArrayList<String> titles = new ArrayList<String>();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        if (param != null) {
+            if (param.containsKey("title")) {
+                title = (String) param.get("title");
+                builder.setTitle(title);
+            }
+
+            if (param.containsKey("options")) {
+                options = (JSONArray) param.get("options");
+
+                for (int i = 0; i < options.size(); i++) {
+                    JSONObject opt = options.getJSONObject(i);
+                    titles.add((String) opt.get("title"));
+                }
+
+                String[] titleArray = titles.toArray(new String[titles.size()]);
+
+                builder.setItems(titleArray, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        listener.onResult(which);
+                    }
+                });
+            }
+        }
+
+        builder.create();
+        builder.show();
     }
 }
